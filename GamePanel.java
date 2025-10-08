@@ -31,13 +31,8 @@ public class GamePanel extends JPanel {
 
         @Override
         public void keyPressed(KeyEvent ke) {
-            if (player1.getY() > 0 || player1.getY() <= screenWidth) {
-                player1.notifyKeyEvent(ke);
-            }
-
-            if (player2.getY() > 0 || player2.getY() <= screenWidth) {
-                player2.notifyKeyEvent(ke);
-            }
+            player1.notifyKeyEvent(ke);
+            player2.notifyKeyEvent(ke);
         }
 
         @Override
@@ -118,8 +113,8 @@ public class GamePanel extends JPanel {
         }
 
         ball.draw(g, getWidth(), getHeight());
-        player1.draw(g);
-        player2.draw(g);
+        player1.draw(g, getWidth(), getHeight());
+        player2.draw(g, getWidth(), getHeight());
 
         checkBallPosition();
 

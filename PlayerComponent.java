@@ -18,13 +18,19 @@ public class PlayerComponent implements GameComponent, InteractiveComponent {
     }
 
     @Override
-    public void draw(Graphics g) {
+    public void draw(Graphics g, int screenWidth, int screenHeight) {
         if (up) {
             y -= SPEED;
+            if (y < 0) {
+                y = 0;
+            }
         }
 
         if (down) {
             y += SPEED;
+            if (y + SIZE > screenHeight) {
+                y = screenHeight - SIZE;
+            }
         }
 
         g.setColor(color);
