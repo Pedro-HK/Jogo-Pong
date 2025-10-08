@@ -1,7 +1,7 @@
 
 public class DecreasePlayersSize implements GamePowers {
 
-    PlayerComponent player1, player2;
+    private PlayerComponent player1, player2;
 
     public DecreasePlayersSize(PlayerComponent player1, PlayerComponent player2) {
         this.player1 = player1;

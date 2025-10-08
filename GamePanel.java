@@ -31,8 +31,13 @@ public class GamePanel extends JPanel {
 
         @Override
         public void keyPressed(KeyEvent ke) {
-            player1.notifyKeyEvent(ke);
-            player2.notifyKeyEvent(ke);
+            if (player1.getY() > 0 || player1.getY() <= screenWidth) {
+                player1.notifyKeyEvent(ke);
+            }
+
+            if (player2.getY() > 0 || player2.getY() <= screenWidth) {
+                player2.notifyKeyEvent(ke);
+            }
         }
 
         @Override
@@ -108,7 +113,7 @@ public class GamePanel extends JPanel {
 
         if (gameOver) {
             g.setColor(Color.red);
-            g.drawString("Game over", 100, 200);
+            g.drawString("Game over", 250, 250);
             return;
         }
 
@@ -131,7 +136,7 @@ public class GamePanel extends JPanel {
             addRandomPower(g);
         }
 
-        if (counter == 400) {
+        if (counter == 300) {
             crrPower.deActivatePower();
             counter = 0;
         }

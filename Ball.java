@@ -7,7 +7,7 @@ public class Ball implements GameComponent {
     private int x, y;
     private Color color = Color.BLACK;
     private boolean xGrow = false, yGrow = false;
-    private int SPEED = 5;
+    private int SPEED = 8;
     private int SIZE = 40;
 
     public Ball(int x, int y, Color color) {

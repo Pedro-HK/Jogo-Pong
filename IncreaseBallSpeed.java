@@ -1,7 +1,7 @@
 
 public class IncreaseBallSpeed implements GamePowers {
 
-    Ball ball;
+    private Ball ball;
 
     public IncreaseBallSpeed(Ball ball) {
         this.ball = ball;

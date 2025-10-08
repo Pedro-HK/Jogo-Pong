@@ -50,6 +50,9 @@ public class PlayerComponent implements GameComponent, InteractiveComponent {
                     }
                 }
             }
+        } else {
+            up = false;
+            down = false;
         }
     }
 

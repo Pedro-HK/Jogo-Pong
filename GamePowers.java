@@ -1,5 +1,6 @@
 
 public interface GamePowers {
+    
 
     public void activatePower();
 
