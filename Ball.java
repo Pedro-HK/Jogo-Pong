@@ -18,23 +18,23 @@ public class Ball implements GameComponent {
 
     @Override
     public void draw(Graphics g, int screenWidth, int screenHeight) {
-        // if (y < 0) {
-        //     yGrow = true;
-        // }
+        if (y < 0) {
+            yGrow = true;
+        }
 
-        // if ((y + 40) > screenHeight) {
-        //     yGrow = false;
-        // }
-        // if (xGrow) {
-        //     x += SPEED;
-        // } else {
-        //     x -= SPEED;
-        // }
-        // if (yGrow) {
-        //     y += SPEED;
-        // } else {
-        //     y -= SPEED;
-        // }
+        if ((y + 40) > screenHeight) {
+            yGrow = false;
+        }
+        if (xGrow) {
+            x += SPEED;
+        } else {
+            x -= SPEED;
+        }
+        if (yGrow) {
+            y += SPEED;
+        } else {
+            y -= SPEED;
+        }
         g.setColor(color);
         g.fillOval(x, y, SIZE, SIZE);
     }
