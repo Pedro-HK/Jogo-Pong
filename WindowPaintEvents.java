@@ -9,6 +9,8 @@ public class WindowPaintEvents extends JFrame {
     public static void main(String[] args) {
         WindowPaintEvents wpe = new WindowPaintEvents();
         wpe.setup();
+        UserDAO userDAO = new UserDAO();
+        userDAO.createUser("Felipe Senna", "fsenna@email.com");
     }
 
     public void setup() {
