@@ -11,10 +11,13 @@ public class PlayerComponent implements GameComponent, InteractiveComponent {
     private boolean up = false, down = false;
     private int SPEED = 8;
     private int SIZE = 160;
+    private int score = 0;
+    private Player playerData;
 
-    public PlayerComponent(Color color, char[] keys) {
+    public PlayerComponent(Color color, char[] keys, Player playerData) {
         this.color = color;
         this.keys = keys;
+        this.playerData = playerData;
     }
 
     @Override
@@ -76,6 +79,22 @@ public class PlayerComponent implements GameComponent, InteractiveComponent {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public Player getPlayerData() {
+        return playerData;
+    }
+
+    public void setPlayerData(Player playerData) {
+        this.playerData = playerData;
     }
 
     public int getSPEED() {

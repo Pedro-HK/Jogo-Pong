@@ -13,14 +13,18 @@ import javax.swing.Timer;
 
 public class GamePanel extends JPanel {
 
+    PlayerDAO playerDAO = new PlayerDAO();
     private int screenHeight = 0;
     private int screenWidth = 0;
-    private PlayerComponent player1 = new PlayerComponent(Color.white, new char[]{'w', 's'});
-    private PlayerComponent player2 = new PlayerComponent(Color.white, new char[]{'i', 'k'});
+    private PlayerComponent player1 = new PlayerComponent(Color.white, new char[] { 'w', 's' },
+            playerDAO.readPlayer("Left"));
+    private PlayerComponent player2 = new PlayerComponent(Color.white, new char[] { 'i', 'k' },
+            playerDAO.readPlayer("Right"));
+    private Score score = new Score(player1, player2);
     private final Ball ball = new Ball(400, 220, Color.white);
     Map<Integer, GamePowers> powers = new HashMap<>();
     private GamePowers crrPower;
-    private boolean gameOver = false;
+    private int maxScore = 3;
 
     private int counter = 0;
 
@@ -60,11 +64,19 @@ public class GamePanel extends JPanel {
         int player2Bottom = player2.getY() + 160;
 
         boolean hitPlayer1 = ball.getX() <= 25 && ball.getY() > player1Top && ball.getY() < player1Bottom;
-        boolean hitPlayer2 = ball.getX() >= screenWidth - 65 && (ball.getY() > player2Top && ball.getY() < player2Bottom);
-        boolean outOfField = ball.getX() > getWidth() + 80 || ball.getX() < 0;
+        boolean hitPlayer2 = ball.getX() >= screenWidth - 65
+                && (ball.getY() > player2Top && ball.getY() < player2Bottom);
+        boolean outOfFieldLeft = ball.getX() < 0;
+        boolean outOfFieldRight = ball.getX() > getWidth() + 80;
 
-        if (outOfField) {
-            gameOver = true;
+
+        if (outOfFieldLeft) {
+            player2.setScore(player2.getScore() + 1);
+            return;
+        }
+        
+        if (outOfFieldRight) {
+            player1.setScore(player1.getScore() + 1);
             return;
         }
 
@@ -106,15 +118,22 @@ public class GamePanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if (gameOver) {
-            g.setColor(Color.red);
-            g.drawString("Game over", 250, 250);
+        if (player1.getScore() < maxScore) {
+            g.setColor(Color.GREEN);
+            g.drawString("Player 1 wins", 250, 250);
+            playerDAO.increasePlayerWins("Left");
+            return;
+        } else if (player2.getScore() < maxScore) {
+            g.setColor(Color.GREEN);
+            g.drawString("Player 2 wins", 250, 250);
+            playerDAO.increasePlayerWins("Right");
             return;
         }
 
         ball.draw(g, getWidth(), getHeight());
         player1.draw(g, getWidth(), getHeight());
         player2.draw(g, getWidth(), getHeight());
+        score.draw(g, getWidth(), getHeight());
 
         checkBallPosition();
 
