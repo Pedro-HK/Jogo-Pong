@@ -1,20 +1,31 @@
-import java.sql.*;
+
+package com.example;
+
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerDAO {
 
-    private static final String URL = "jdbc:postgresql://localhost/postgres";
+    private static final String URL = "jdbc:postgresql://localhost:5433/postgres";
     private static final String USER = "postgres";
     private static final String PASSWORD = "test";
 
     public void createPlayer(String name) {
-        String sql = "INSERT INTO players (name) VALUES (?, ?)";
+        String sql = "INSERT INTO players (name, wins, defeats) VALUES (?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, name);
+            stmt.setInt(2, 0);
+            stmt.setInt(3, 0);
             stmt.executeUpdate();
             System.out.println("Player " + name + " created successfully!");
         } catch (SQLException e) {
@@ -23,7 +34,7 @@ public class PlayerDAO {
     }
 
     public Player readPlayer(String name) {
-        String sql = "SELECT id, name, wins, defeats FROM users WHERE name = ?";
+        String sql = "SELECT id, name, wins, defeats FROM players WHERE name = ?";
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -102,7 +113,7 @@ public class PlayerDAO {
     }
 
     public void deletePlayer(int id) {
-        String sql = "DELETE FROM player WHERE id = ?";
+        String sql = "DELETE FROM players WHERE id = ?";
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -121,7 +132,7 @@ public class PlayerDAO {
     }
 
     public List<String> listUsers() {
-        String sql = "SELECT id, name, email FROM users";
+        String sql = "SELECT id, name FROM players";
         List<String> users = new ArrayList<>();
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -131,8 +142,7 @@ public class PlayerDAO {
             while (rs.next()) {
                 users.add(
                     rs.getInt("id") + " - " +
-                    rs.getString("name") + " (" +
-                    rs.getString("email") + ")"
+                    rs.getString("name")
                 );
             }
 

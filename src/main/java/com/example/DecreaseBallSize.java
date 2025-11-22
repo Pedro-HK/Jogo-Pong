@@ -1,4 +1,6 @@
 
+package com.example;
+
 public class DecreaseBallSize implements GamePowers {
 
     private Ball ball;

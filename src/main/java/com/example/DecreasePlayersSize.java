@@ -1,4 +1,6 @@
 
+package com.example;
+
 public class DecreasePlayersSize implements GamePowers {
 
     private PlayerComponent player1, player2;

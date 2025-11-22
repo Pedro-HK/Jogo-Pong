@@ -1,4 +1,6 @@
 
+package com.example;
+
 import java.awt.Graphics;
 
 public interface GameComponent {

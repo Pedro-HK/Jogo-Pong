@@ -1,3 +1,5 @@
+package com.example;
+
 
 import java.awt.Color;
 import java.awt.Font;
@@ -17,7 +19,7 @@ public class Score implements GameComponent {
     @Override
     public void draw(Graphics g, int screenWidth, int screenHeight) {
         g.setFont(scoreFont);
-        g.setColor(Color.BLACK);
+        g.setColor(Color.WHITE);
         String scoreText = player1.getScore() + " : " + player2.getScore();
         int textWidth = g.getFontMetrics().stringWidth(scoreText);
         g.drawString(scoreText, (screenWidth - textWidth) / 2, 50);

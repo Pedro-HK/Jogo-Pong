@@ -1,5 +1,8 @@
 
+package com.example;
+
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -8,6 +11,7 @@ import java.awt.event.KeyListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -17,15 +21,16 @@ public class GamePanel extends JPanel {
     private int screenHeight = 0;
     private int screenWidth = 0;
     private PlayerComponent player1 = new PlayerComponent(Color.white, new char[] { 'w', 's' },
-            playerDAO.readPlayer("Left"));
+            playerDAO.readPlayer("Player 1"));
     private PlayerComponent player2 = new PlayerComponent(Color.white, new char[] { 'i', 'k' },
-            playerDAO.readPlayer("Right"));
+            playerDAO.readPlayer("Player 2"));
     private Score score = new Score(player1, player2);
     private final Ball ball = new Ball(400, 220, Color.white);
     Map<Integer, GamePowers> powers = new HashMap<>();
     private GamePowers crrPower;
     private int maxScore = 3;
-
+    
+    private int resetGameCounter = 0;
     private int counter = 0;
 
     KeyListener kl = new KeyListener() {
@@ -69,14 +74,22 @@ public class GamePanel extends JPanel {
         boolean outOfFieldLeft = ball.getX() < 0;
         boolean outOfFieldRight = ball.getX() > getWidth() + 80;
 
-
         if (outOfFieldLeft) {
             player2.setScore(player2.getScore() + 1);
+            System.out.println("player2.getScore " + player2.getScore());
+            if(player2.getScore() == maxScore) {
+                return;
+            }
+            resetBallPosition();
             return;
         }
         
         if (outOfFieldRight) {
             player1.setScore(player1.getScore() + 1);
+            if(player1.getScore() == maxScore) {
+                return;
+            }
+            resetBallPosition();
             return;
         }
 
@@ -88,7 +101,18 @@ public class GamePanel extends JPanel {
         if (hitPlayer2) {
             ball.setxGrow(false);
         }
+    }
 
+    public void resetBallPosition() {
+        ball.setX(screenWidth / 2);
+        ball.setY(screenHeight / 2);
+    }
+
+    public void resetGame() {
+        resetBallPosition();
+        player1.setScore(0);
+        player2.setScore(0);
+        setPlayersPosition();
     }
 
     public void addRandomPower(Graphics g) {
@@ -114,26 +138,54 @@ public class GamePanel extends JPanel {
         powers.put(4, new ReverseKeysPlayers(player1, player2));
     }
 
+    public void loadPlayersWins (Graphics g) {
+        String player1Wins = player1.getPlayerData().getWins() + " wins";
+        String player2Wins = player2.getPlayerData().getWins() + " wins";
+        g.setFont(new Font("Arial", Font.BOLD, 24));
+        
+        g.drawString(player1Wins, player1.getX() + 50, 50);
+        g.drawString(player2Wins, player2.getX() - 100, 50);
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if (player1.getScore() < maxScore) {
+        if (player1.getScore() == maxScore) {
             g.setColor(Color.GREEN);
-            g.drawString("Player 1 wins", 250, 250);
-            playerDAO.increasePlayerWins("Left");
-            return;
-        } else if (player2.getScore() < maxScore) {
+            g.drawString("Player 1 wins", 350, 350);
+            if(resetGameCounter==0) {
+                playerDAO.increasePlayerWins("Player 1");
+                playerDAO.increasePlayerDefeats("Player 2");
+            }
+            resetGameCounter++;
+            if(resetGameCounter>100) {
+                resetGame();
+                resetGameCounter=0;
+            } else {
+                return;
+            }
+        } else if (player2.getScore() == maxScore) {
             g.setColor(Color.GREEN);
-            g.drawString("Player 2 wins", 250, 250);
-            playerDAO.increasePlayerWins("Right");
-            return;
+            g.drawString("Player 2 wins", 350, 350);
+            if(resetGameCounter==0) {
+                playerDAO.increasePlayerWins("Player 2");
+                playerDAO.increasePlayerDefeats("Player 1");
+            }
+            resetGameCounter++;
+            if(resetGameCounter>100) {
+                resetGame();
+                resetGameCounter=0;
+            } else {
+                return;
+            }
         }
 
         ball.draw(g, getWidth(), getHeight());
         player1.draw(g, getWidth(), getHeight());
         player2.draw(g, getWidth(), getHeight());
         score.draw(g, getWidth(), getHeight());
+        loadPlayersWins(g);
 
         checkBallPosition();
 

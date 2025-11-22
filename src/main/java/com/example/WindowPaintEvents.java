@@ -1,5 +1,7 @@
+package com.example;
 
 import java.awt.BorderLayout;
+
 import javax.swing.JFrame;
 
 public class WindowPaintEvents extends JFrame {
@@ -8,10 +10,10 @@ public class WindowPaintEvents extends JFrame {
 
     public static void main(String[] args) {
         WindowPaintEvents wpe = new WindowPaintEvents();
-        wpe.setup();
         PlayerDAO playerDAO = new PlayerDAO();
-        playerDAO.createPlayer("Left");
-        playerDAO.createPlayer("Right");
+        playerDAO.createPlayer("Player 1");
+        playerDAO.createPlayer("Player 2");
+        wpe.setup();
     }
 
     public void setup() {
