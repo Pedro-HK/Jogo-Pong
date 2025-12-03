@@ -112,6 +112,8 @@ public class GamePanel extends JPanel {
         resetBallPosition();
         player1.setScore(0);
         player2.setScore(0);
+        player1.getPlayerData().setWins(playerDAO.readPlayer("Player 1").getWins());
+        player2.getPlayerData().setWins(playerDAO.readPlayer("Player 2").getWins());
         setPlayersPosition();
     }
 
